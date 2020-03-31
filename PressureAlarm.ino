@@ -13,12 +13,14 @@ int sensorValue[] = {0, 0, 0, 0, 0, 0};    // Variable to store the value coming
 
 void setup() {  // put your setup code here, to run once:
   Serial.begin(9600);         // Enable the serial port at 9600 baud.
-  for(int n=0; n<6; n=n+1){
+  for(int n=0; n<6; n=n+1){  // Set LED pinMode as OUTPUT.
     pinMode(indicatorPin[n], OUTPUT);
+  }
+  for(int n=0; n<6; n=n+1){  // Set Analog pinMode as INPUT.
+    pinMode(sensorPin[n], INPUT);
   }
   pinMode(ledPin, OUTPUT);    // Set the LED Pin to output.
   pinMode(buzzer, OUTPUT);    // Set the Buzzer Pin to output.
-  delay(500);
 }
 
 void loop() { // This function runs in a continuous loop until reset or power is lost.
@@ -56,4 +58,4 @@ void checkPressure() {  // Function to read the pressure.
   for(int x=0; x<6; x=x+1){
   sensorValue[x] = analogRead(sensorPin[x]);  // read the value from the sensor.
   }
-  
+}
