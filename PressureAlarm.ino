@@ -7,7 +7,6 @@ int pressureHigh = 800; // Define the Upper Limit threshold.
 int sensorPin[] = {A0, A1, A2, A3, A4, A5};     // Select the input pin for the pressure Sensors.
 int indicatorPin[] = {2, 3, 4, 5, 6, 7};        // Select the output pin for the LED Indicators.
 int buzzer = 8;         // Select the pin for the Buzzer.
-int ledPin = 13;        // Select the pin for the LED.
 
 int sensorValue[] = {0, 0, 0, 0, 0, 0};    // Variable to store the value coming from the sensor.
 
@@ -19,7 +18,7 @@ void setup() {  // put your setup code here, to run once:
   for(int n=0; n<6; n=n+1){  // Set Analog pinMode as INPUT.
     pinMode(sensorPin[n], INPUT);
   }
-  pinMode(ledPin, OUTPUT);    // Set the LED Pin to output.
+
   pinMode(buzzer, OUTPUT);    // Set the Buzzer Pin to output.
 }
 
@@ -34,24 +33,35 @@ void loop() { // This function runs in a continuous loop until reset or power is
         Serial.print("Valve ");                                                     // print to serial output,
         Serial.print(i);                                                            // ...
         Serial.println(", Low pressure...");                                        // ...
-        tone(buzzer, buzzLow);                                                      // sound alarm,
-        digitalWrite(indicatorPin[i], HIGH);                                        // light the LED.
+        digitalWrite(buzzer, LOW);                                                  // sound alarm,
+                                                                                    //
+        digitalWrite(indicatorPin[i], LOW);                                         // blink off the LED,
+        delay(250);                                                                 // Wait .25 second,
+        digitalWrite(indicatorPin[i], HIGH);                                        // blink on the LED,
+        delay(250);                                                                 // wait another .25 second.
+                                                                                    //
       } else if (sensorValue[i] > pressureLow && sensorValue[i] < pressureHigh) {   // Else If the pressure is in the safe zone,
         Serial.print("Valve ");                                                     // print to serial output,
         Serial.print(i);                                                            // ...
         Serial.println(", pressure is Perfect...");                                 // ...
-        noTone(buzzer);                                                             // without alarm,
-        digitalWrite(indicatorPin[i], LOW);                                         // turn off LED.
+        digitalWrite(buzzer, HIGH);                                                 // without alarm,
+                                                                                    //
+        digitalWrite(indicatorPin[i], HIGH);                                        // turn off LED.
+                                                                                    //
       } else if (sensorValue[i] >= pressureHigh) {                                  // Else If the pressure is higher than the defined upper limit,
         Serial.print("Valve ");                                                     // print to serial output,
         Serial.print(i);                                                            // ...
         Serial.println(", High pressure...");                                       // ...
-        tone(buzzer, buzzHigh);                                                     // sound alarm,
-        digitalWrite(indicatorPin[i], HIGH);                                        // light LED.
+        digitalWrite(buzzer, LOW);                                                  // sound alarm,
+                                                                                    //
+        digitalWrite(indicatorPin[i], LOW);                                         // blink off the LED,
+        delay(250);                                                                 // Wait .25 second,
+        digitalWrite(indicatorPin[i], HIGH);                                        // blink on the LED,
+        delay(250);                                                                 // wait another .25 second.
+        
       }
   }
   Serial.println("");
-  delay(1000);
 }
 
 void checkPressure() {  // Function to read the pressure.
