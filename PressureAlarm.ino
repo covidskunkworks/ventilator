@@ -117,6 +117,7 @@ void valveChoice(){
   for(int i = 0; i <= 5; i++){
     if(bitRead(switchVar, i)){
       bouncing = true;
+      debounceStart = millis();
       if(!valvesToMonitor[i]) {
         digitalWrite(indicatorPin[i], HIGH);
         valvesToMonitor[i] = 1;
@@ -140,7 +141,6 @@ byte readSwitches() {
     digitalWrite(clockPin, LOW); 
     delayMicroseconds(0.5);
     temp = digitalRead(dataPin);
-    if
     
     
     if (temp) {
