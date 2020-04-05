@@ -122,6 +122,7 @@ void valveChoice(){
         valvesToMonitor[i] = 1;
       } else {
         digitalWrite(indicatorPin[i], LOW);
+        valvesToMonitor[i] = 0;
       }
     } // else do nothing.
   }
