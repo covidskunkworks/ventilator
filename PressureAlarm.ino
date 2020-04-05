@@ -36,6 +36,7 @@ void setup() {  // put your setup code here, to run once:
   pinMode(dataPin, INPUT);
 }
 
+int masterToggleBit = 6;
 boolean bouncing = false;
 int debounceStart = 0;
 
@@ -48,7 +49,7 @@ void loop() { // This function runs in a continuous loop until reset or power is
     bouncing = false;
   }
 
-  if(bitRead(switchVar, 6)){  
+  if(bitRead(switchVar, masterToggleBit)){  
     // Run Function to check the pressure.
     checkPressure();
   
@@ -110,19 +111,19 @@ void valveChoice(){
 
   //read in switch options
   switchVar = readSwitches();
-  if(switchVar) { bouncing = true; }
 
   //turn on led for switch
   //this is where we turn on the valve to monitor
   for(int i = 0; i <= 5; i++){
     if(bitRead(switchVar, i)){
-      digitalWrite(indicatorPin[i], HIGH);
-      valvesToMonitor[i] = 1;  
-    }
-    else{
-      digitalWrite(indicatorPin[i], LOW);
-      valvesToMonitor[i] = 0;  
-    }   
+      bouncing = true;
+      if(!valvesToMonitor[i]) {
+        digitalWrite(indicatorPin[i], HIGH);
+        valvesToMonitor[i] = 1;
+      } else {
+        digitalWrite(indicatorPin[i], LOW);
+      }
+    } // else do nothing.
   }
 }
 //reads which switches are selected
